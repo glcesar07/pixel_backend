@@ -12,7 +12,7 @@
 appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
-**/Properties/launchSettings.json
+#**/Properties/launchSettings.json
 **/Logs/log.txt
 *.userprefs
 
