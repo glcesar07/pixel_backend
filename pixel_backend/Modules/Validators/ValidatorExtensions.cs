@@ -1,5 +1,4 @@
-﻿using Application.DTO;
-using Application.Validator;
+﻿using Application.Validator;
 
 namespace Presentation.Modules.Validators
 {
@@ -8,6 +7,7 @@ namespace Presentation.Modules.Validators
         public static IServiceCollection AddCustomValidators(this IServiceCollection services)
         {
             services.AddTransient<LoginDtoValidator>();
+            services.AddTransient<CatalogueDtoValidator>();
 
             return services;
         }

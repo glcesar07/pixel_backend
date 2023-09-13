@@ -26,6 +26,7 @@ namespace Presentation.Modules.Injection
             services.AddScoped<ITokenService, AccessToken>();
             services.AddScoped<LoginService>();
             services.AddScoped<ValidatePassword>();
+            services.AddScoped<ICatalogueService, CatalogueService>();
 
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

@@ -41,5 +41,6 @@
     public class StoredProceduresConfig
     {
         public string? Login { get; set; }
+        public string? Rol { get; set; }
     }
 }
