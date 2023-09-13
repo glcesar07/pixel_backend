@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.Validator;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infraestructure.Database;
@@ -14,18 +15,27 @@ namespace Infraestructure.Implementations
         private readonly IConfiguration _configuration;
         private readonly string _loginStoredProcedure;
         private readonly ValidatePassword _validatePassword;
+        private readonly LoginDtoValidator _loginDtoValidator;
 
-        public LoginService(IConfiguration configuration, ValidatePassword validatePassword)
+        public LoginService(IConfiguration configuration, ValidatePassword validatePassword, LoginDtoValidator loginDtoValidator)
         {
             _configuration = configuration;
             _loginStoredProcedure = configuration["DataBase:StoredProcedures:Login"];
             _validatePassword = validatePassword;
+            _loginDtoValidator = loginDtoValidator;
         }
 
         public ServiceResultEntity LoginUser(LoginDto login)
         {
             try
             {
+                var validation = _loginDtoValidator.Validate(login);
+
+                if (!validation.IsValid)
+                {
+                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = validation.Errors };
+                }
+
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
                 {
                     using (SqlCommand cmd = new SqlCommand(_loginStoredProcedure, conn))

@@ -13,7 +13,7 @@ namespace Presentation.Modules.Injection
         {
             var configuration = builder.Configuration;
 
-            // Configuración de Appsettings
+            // Configure to Appsettings
             services.Configure<ConnectionStringsConfig>(configuration.GetSection("ConnectionStrings"));
             services.Configure<LoggingConfig>(configuration.GetSection("Logging"));
             services.Configure<JwtConfig>(configuration.GetSection("Jwt"));
