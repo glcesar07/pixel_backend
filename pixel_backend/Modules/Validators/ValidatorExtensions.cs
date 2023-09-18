@@ -10,6 +10,7 @@ namespace Presentation.Modules.Validators
             services.AddTransient<CatalogueDtoValidator>();
             services.AddTransient<PersonDtoValidator>();
             services.AddTransient<FolderDtoValidator>();
+            services.AddTransient<DocumentDtoValidator>();
 
             return services;
         }
