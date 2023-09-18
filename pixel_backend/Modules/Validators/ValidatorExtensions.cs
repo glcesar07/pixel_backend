@@ -8,6 +8,8 @@ namespace Presentation.Modules.Validators
         {
             services.AddTransient<LoginDtoValidator>();
             services.AddTransient<CatalogueDtoValidator>();
+            services.AddTransient<PersonDtoValidator>();
+            services.AddTransient<FolderDtoValidator>();
 
             return services;
         }

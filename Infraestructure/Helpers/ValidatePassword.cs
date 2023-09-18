@@ -27,11 +27,13 @@ namespace Infraestructure.Helpers
 
             var response = new
             {
-                codigo = data["id"],
+                //codigo = data["id"],
+                nombreCompleto = data["nombreCompleto"],
+                roles = data["rol"],
                 username = data["username"],
+                password = data["password"],
+                rememberToken = data["rememberToken"],
                 estado = data["estado"],
-                roles = data["roles"],
-                nombreCompleto = data["nombreCompleto"]
             };
 
             return new ServiceResultEntity
@@ -40,11 +42,12 @@ namespace Infraestructure.Helpers
                 Message = "Acceso permitido.",
                 Data = new
                 {
-                    response.codigo,
+                    //response.codigo,
                     response.username,
                     response.estado,
                     response.roles,
                     response.nombreCompleto,
+                    response.rememberToken,
                     token = _tokenService.GenerateToken(response)
                 }
             };

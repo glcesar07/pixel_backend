@@ -1,6 +1,4 @@
 ﻿using Domain.Entities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Data.SqlClient;
 
