@@ -6,14 +6,8 @@ using Domain.Interfaces;
 using Infraestructure.Database;
 using Infraestructure.Helpers;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infraestructure.Implementations
 {
@@ -42,7 +36,7 @@ namespace Infraestructure.Implementations
                 }
 
                 string root = Path.Combine(_configuration["Root"], _configuration["Path"]);
-                string pathCreate;
+                string pathCreateServer;
                 byte[] fileBytes;
 
                 try
@@ -65,7 +59,6 @@ namespace Infraestructure.Implementations
                 {
                     return new ServiceResultEntity { Success = false, Message = "Formato de archivo no soportado." + " " + request.nombre };
                 }
-
 
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
                 {
@@ -95,13 +88,17 @@ namespace Infraestructure.Implementations
                         {
                             cmd.Parameters.Clear();
 
-                            pathCreate = Path.Combine(root, request.ubicacion);
+                            string thisTime = DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss");
+                            string nameUnique = Guid.NewGuid().ToString();
+                            string newNameFisico = thisTime + "-" + nameUnique + "-" + nombreFisico;
+
+                            pathCreateServer = Path.Combine(root, request.ubicacion, newNameFisico);
 
                             cmd.Parameters.AddWithValue("@opcion", 1);
                             cmd.Parameters.AddWithValue("@nombre", nombre);
                             cmd.Parameters.AddWithValue("@carpeta", request.carpeta);
                             cmd.Parameters.AddWithValue("@extension", extension);
-                            cmd.Parameters.AddWithValue("@nombreFisico", nombreFisico);
+                            cmd.Parameters.AddWithValue("@nombreFisico", newNameFisico);
                             cmd.Parameters.AddWithValue("@ubicacion", request.ubicacion);
                             cmd.Parameters.AddWithValue("@usuario", request.usuario ?? _configuration["UserCreate"]);
 
@@ -115,7 +112,7 @@ namespace Infraestructure.Implementations
 
                             try
                             {
-                                using (var filestream = new FileStream(pathCreate, FileMode.Create))
+                                using (var filestream = new FileStream(pathCreateServer, FileMode.Create))
                                 {
                                     filestream.Write(fileBytes, 0, fileBytes.Length);
                                 }

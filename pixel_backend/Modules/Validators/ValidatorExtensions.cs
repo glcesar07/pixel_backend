@@ -11,6 +11,7 @@ namespace Presentation.Modules.Validators
             services.AddTransient<PersonDtoValidator>();
             services.AddTransient<FolderDtoValidator>();
             services.AddTransient<DocumentDtoValidator>();
+            services.AddTransient<OcrDtoValidator>();
 
             return services;
         }

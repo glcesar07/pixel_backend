@@ -29,6 +29,7 @@ namespace Presentation.Modules.Injection
             services.AddScoped<ICatalogueService, CatalogueService>();
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IFolderService, FolderService>();
+            services.AddScoped<IOcrService, OcrService>();
 
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
