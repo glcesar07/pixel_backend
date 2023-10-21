@@ -12,6 +12,7 @@ namespace Presentation.Modules.Validators
             services.AddTransient<FolderDtoValidator>();
             services.AddTransient<DocumentDtoValidator>();
             services.AddTransient<OcrDtoValidator>();
+            services.AddTransient<ParagraphDtoValidator>();
 
             return services;
         }
