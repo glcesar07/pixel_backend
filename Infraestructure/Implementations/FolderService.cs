@@ -33,8 +33,11 @@ namespace Infraestructure.Implementations
                 {
                     return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = validation.Errors };
                 }
-                
-                string root = Path.Combine(_configuration["Root"], _configuration["Path"]);
+
+                String pathRoot = _configuration["Root"];
+                String pathPath = _configuration["PathUpload"];
+
+                string root = Path.Combine(pathRoot, pathPath);
                 string pathCreate;
 
                 if (string.IsNullOrEmpty(request.ubicacion))
@@ -46,11 +49,19 @@ namespace Infraestructure.Implementations
                     pathCreate = Path.Combine(root, request.ubicacion, CleanText.AddGuion(request.nombreFisico));
                 }
 
+                if (Directory.Exists(pathCreate))
+                {
+                    return new ServiceResultEntity { Success = false, Message = "Lo sentimos la carpeta ya existe." };
+                }
+
+                // Intenta crear el directorio
+                Directory.CreateDirectory(pathCreate);
+
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
                 {
                     using (SqlCommand cmd = new(_commandText, conn))
                     {
-                        SqlTransaction transaction = conn.BeginTransaction("carpetaTransaction");                        
+                        SqlTransaction transaction = conn.BeginTransaction("carpetaTransaction");
 
                         cmd.Parameters.AddWithValue("@opcion", 1);
                         cmd.Parameters.AddWithValue("@nombre", request.nombre);
@@ -71,16 +82,7 @@ namespace Infraestructure.Implementations
                         }
 
                         transaction.Commit();
-
-                        if (!Directory.Exists(pathCreate))
-                        {
-                            Directory.CreateDirectory(pathCreate);
-                            return new ServiceResultEntity { Success = true, Message = "Carpeta creada exitosamente." };
-                        }
-                        else
-                        {
-                            return new ServiceResultEntity { Success = false, Message = "Lo sentimos la carpeta ya existe." };
-                        }
+                        return new ServiceResultEntity { Success = true, Message = "Carpeta creada exitosamente." };
                     }
                 }
             }
@@ -89,6 +91,7 @@ namespace Infraestructure.Implementations
                 return new ServiceResultEntity { Success = false, Message = ex.ToString() };
             }
         }
+
 
         public ServiceResultEntity Update(FolderDto request)
         {
@@ -138,7 +141,7 @@ namespace Infraestructure.Implementations
                     {
                         cmd.Parameters.AddWithValue("@opcion", 3);
                         cmd.Parameters.AddWithValue("@id", request.id);
-                        cmd.Parameters.AddWithValue("@nombre", request.estado);
+                        cmd.Parameters.AddWithValue("@estado", request.estado);
                         cmd.Parameters.AddWithValue("@usuario", request.usuario);
 
                         return DataValidator.ValidateDatabaseData(cmd);
@@ -159,7 +162,8 @@ namespace Infraestructure.Implementations
                 {
                     using (SqlCommand cmd = new(_commandText, conn))
                     {
-                        cmd.Parameters.AddWithValue("@opcion", 4);
+                        cmd.Parameters.AddWithValue("@opcion", 7);
+                        cmd.Parameters.AddWithValue("@persona", request.persona);
                         cmd.Parameters.AddWithValue("@PageSize", request.pageSize);
                         cmd.Parameters.AddWithValue("@PageNumber", request.pageNumber);
 
@@ -203,16 +207,16 @@ namespace Infraestructure.Implementations
         {
             try
             {
-                if (request.id is null)
+                if (request.padre is null)
                 {
-                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "id no se esta enviando correctamente." };
+                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "padre no se esta enviando correctamente." };
                 }
 
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
                 {
                     using (SqlCommand cmd = new(_commandText, conn))
                     {
-                        cmd.Parameters.AddWithValue("@opcion", 7);
+                        cmd.Parameters.AddWithValue("@opcion", 8);
                         cmd.Parameters.AddWithValue("@padre", request.padre);
                         cmd.Parameters.AddWithValue("@PageSize", request.pageSize);
                         cmd.Parameters.AddWithValue("@PageNumber", request.pageNumber);

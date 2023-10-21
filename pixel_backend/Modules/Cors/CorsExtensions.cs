@@ -6,12 +6,11 @@
         {
             string myPolicy = "pixelCors";
 
-            services.AddCors(options =>
+            services.AddCors(Options =>
             {
-                options.AddPolicy(myPolicy, builder =>
+                Options.AddPolicy(name: myPolicy, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000",
-                                        "http://localhost")
+                    builder.WithOrigins("http://localhost:5173", "http://localhost")
                            .AllowAnyHeader()
                            .AllowCredentials()
                            .WithMethods("GET", "POST", "PUT", "DELETE")

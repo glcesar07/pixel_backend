@@ -35,7 +35,7 @@ namespace Infraestructure.Security
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
                     claims,
-                    expires: null,
+                    expires: DateTime.UtcNow.AddHours(48),
                     signingCredentials: credentials
                 );
 

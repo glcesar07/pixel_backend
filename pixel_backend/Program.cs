@@ -9,14 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Configure Authentication
-builder.Services.AddCustomAuthentication(builder);
 builder.Services.AddCustomCors();
+builder.Services.AddCustomAuthentication(builder);
 builder.Services.AddCustomInjection(builder);
 builder.Services.AddCustomValidators();
 builder.Services.AddCustomSwagger();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -36,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("corsPixel");
+app.UseCors("pixelCors");
 
 app.UseAuthorization();
 
