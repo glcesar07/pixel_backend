@@ -10,7 +10,7 @@
             {
                 Options.AddPolicy(name: myPolicy, builder =>
                 {
-                    builder.WithOrigins("http://localhost:5173", "http://localhost")
+                    builder.WithOrigins("http://localhost:5173", "http://localhost", "http://localhost:5174")
                            .AllowAnyHeader()
                            .AllowCredentials()
                            .WithMethods("GET", "POST", "PUT", "DELETE")

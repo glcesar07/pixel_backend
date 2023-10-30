@@ -32,6 +32,10 @@ namespace Presentation.Modules.Injection
             services.AddScoped<IOcrService, OcrService>();
             services.AddScoped<IParagraphService, ParagraphService>();
             services.AddScoped<IPrintDocumentService, PrintDocumentService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IRegionService, RegionService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
 
             //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
