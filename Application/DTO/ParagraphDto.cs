@@ -4,7 +4,7 @@
     {
         public int? id { get; set; }
         public int? carpeta { get; set; }
-        public int? nombreDocumento { get; set; }
+        public string? nombreDocumento { get; set; }
         public List<PageDataDto>? data { get; set; }
         public string? usuario { get; set; }
         public int? estado { get; set; }

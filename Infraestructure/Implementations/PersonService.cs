@@ -46,8 +46,8 @@ namespace Infraestructure.Implementations
                         cmd.Parameters.AddWithValue("@genero", request.genero);
 
                         cmd.Parameters.AddWithValue("@empresa", request.empresa);
-                        cmd.Parameters.AddWithValue("@password", BCrypt.Net.BCrypt.HashPassword(_configuration["PasswordUser"] ?? "secreto123+"));                        
-                        cmd.Parameters.AddWithValue("@rol", request.rol);
+                        cmd.Parameters.AddWithValue("@password", BCrypt.Net.BCrypt.HashPassword(request.password) ?? BCrypt.Net.BCrypt.HashPassword(_configuration["PasswordUser"]));                        
+                        cmd.Parameters.AddWithValue("@rol", request.rol ?? 2);
                         cmd.Parameters.AddWithValue("@proveedorAutenticacion", request.proveedorAutenticacion);
 
                         cmd.Parameters.AddWithValue("@usuario", request.usuario ?? _configuration["UserCreate"]);

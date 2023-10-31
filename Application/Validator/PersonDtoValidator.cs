@@ -35,9 +35,9 @@ namespace Application.Validator
             //     .NotNull().WithMessage("El campo usuario es requerido.")
             //     .NotEmpty().WithMessage("El campo usuario no puede estar vacío.");
 
-            RuleFor(u => u.rol)
-                 .NotNull().WithMessage("El campo rol es requerido.")
-                 .NotEmpty().WithMessage("El campo rol no puede estar vacío.");
+            //RuleFor(u => u.rol)
+            //     .NotNull().WithMessage("El campo rol es requerido.")
+            //     .NotEmpty().WithMessage("El campo rol no puede estar vacío.");
 
             RuleFor(u => u.proveedorAutenticacion)
                  .NotNull().WithMessage("El campo proveedorAutenticacion es requerido.")

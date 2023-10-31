@@ -27,7 +27,7 @@ namespace Infraestructure.Helpers
 
             var response = new
             {
-                //codigo = data["id"],
+                p = data["idPersona"],
                 nombreCompleto = data["nombreCompleto"],
                 roles = data["rol"],
                 username = data["username"],
@@ -42,7 +42,7 @@ namespace Infraestructure.Helpers
                 Message = "Acceso permitido.",
                 Data = new
                 {
-                    //response.codigo,
+                    response.p,
                     response.username,
                     response.estado,
                     response.roles,

@@ -37,16 +37,16 @@ namespace Infraestructure.Implementations
                 String pathRoot = _configuration["Root"];
                 String pathPath = _configuration["PathUpload"];
 
-                string root = Path.Combine(pathRoot, pathPath);
+                string root = pathRoot + "/" + pathPath;
                 string pathCreate;
 
                 if (string.IsNullOrEmpty(request.ubicacion))
                 {
-                    pathCreate = Path.Combine(root, CleanText.AddGuion(request.nombreFisico));
+                    pathCreate = root + "/" + CleanText.AddGuion(request.nombreFisico);
                 }
                 else
                 {
-                    pathCreate = Path.Combine(root, request.ubicacion, CleanText.AddGuion(request.nombreFisico));
+                    pathCreate = root + request.ubicacion + "/" + CleanText.AddGuion(request.nombreFisico);
                 }
 
                 if (Directory.Exists(pathCreate))

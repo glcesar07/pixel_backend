@@ -40,8 +40,6 @@ namespace Infraestructure.Implementations
 
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
                 {
-                    conn.Open();
-
                     using (SqlCommand cmd = new(_commandTextDocumento, conn))
                     {
                         SqlTransaction transaction = conn.BeginTransaction("transaction");
@@ -71,10 +69,12 @@ namespace Infraestructure.Implementations
 
                         ServiceResultEntity pageResult = DataValidator.ValidateDatabaseData(cmd);
 
-                        if (pageResult.Data is not DataTable paginasDataTable)
+                        DataTable? pageResultDataTable = pageResult.Data as DataTable;
+
+                        if (pageResultDataTable == null)
                         {
                             transaction.Rollback();
-                            return new ServiceResultEntity { Success = false, Message = "Error al obtener datos del documento." };
+                            return new ServiceResultEntity { Success = false, Message = "Error al obtener datos de  la pagina." };
                         }
 
                         cmd.CommandText = _commandTextParrafos;
@@ -86,9 +86,8 @@ namespace Infraestructure.Implementations
                                 cmd.Parameters.Clear();
 
                                 cmd.Parameters.AddWithValue("@opcion", 1);
-                                cmd.Parameters.AddWithValue("@documento", documentoDataTable.Rows[0]["id"]);
-                                cmd.Parameters.AddWithValue("@pagina", paginasDataTable.Rows[0]["id"]); // Usando el ID de la página obtenido previamente
-                                cmd.Parameters.AddWithValue("@parrafo", paragraph.paragraph);
+                                cmd.Parameters.AddWithValue("@pagina", pageResultDataTable.Rows[0]["id"]);
+                                cmd.Parameters.AddWithValue("@contenido", paragraph.paragraph);
                                 cmd.Parameters.AddWithValue("@usuario", request.usuario ?? _configuration["UserCreate"]);
 
                                 ServiceResultEntity paragraphResult = DataValidator.ValidateDatabaseData(cmd);

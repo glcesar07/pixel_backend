@@ -35,6 +35,8 @@ namespace Infraestructure.Helpers
 
             if (setter?.Tables["tabla"]?.Rows.Count <= 0 || setter?.Tables["tabla"] is null)
             {
+                // Imprimir el número de filas para depuración
+                Console.WriteLine($"Número de filas devueltas: {setter?.Tables["tabla"]?.Rows.Count ?? 0}");
                 return new ServiceResultEntity
                 {
                     Success = false,

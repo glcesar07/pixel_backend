@@ -12,7 +12,8 @@
         public string? usuario { get; set; }
         public int? estado { get; set; }
 
-        public int? empresa { get; set; }
+        public string? empresa { get; set; }
+        public string? password { get; set; }
         public int? rol { get; set; }
         public int? proveedorAutenticacion { get; set; }
         public int? pageSize { get; set; }
