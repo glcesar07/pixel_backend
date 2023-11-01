@@ -8,6 +8,7 @@ using Infraestructure.Helpers;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Infraestructure.Implementations
 {
@@ -272,7 +273,7 @@ namespace Infraestructure.Implementations
             {
                 if (request.id is null)
                 {
-                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "id no se esta enviando correctamente." };
+                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "id no se está enviando correctamente." };
                 }
 
                 using (SqlConnection conn = MainConnection.Connection(_configuration))
@@ -282,7 +283,37 @@ namespace Infraestructure.Implementations
                         cmd.Parameters.AddWithValue("@opcion", 5);
                         cmd.Parameters.AddWithValue("@id", request.id);
 
-                        return DataValidator.ValidateDatabaseData(cmd);
+                        var result = DataValidator.ValidateDatabaseData(cmd);
+
+                        if (!result.Success)
+                        {
+                            return result;
+                        }
+
+                        // Transforma los datos en el formato JSON deseado
+                        var dataTable = result.Data as DataTable;
+
+                        if (dataTable == null)
+                        {
+                            return new ServiceResultEntity { Success = false, Message = "Error al obtener datos del documento." };
+                        }
+
+                        var documentResponse = new DocumentResponseDto
+                        {
+                            Pages = 1,
+                            Data = dataTable.AsEnumerable()
+                                .GroupBy(row => row.Field<int>("pagina"))
+                                .Select(group => new PageResponseDto
+                                {
+                                    Page = 1,
+                                    Data = group.Select(row => new ParagraphResponseDto
+                                    {
+                                        Paragraph = row.Field<string>("contenido")
+                                    }).ToList()
+                                }).ToList()
+                        };
+
+                        return new ServiceResultEntity { Success = true, Message = "Proceso realizado con éxito.", Data = documentResponse };
                     }
                 }
             }
@@ -290,7 +321,7 @@ namespace Infraestructure.Implementations
             {
                 return new ServiceResultEntity { Success = false, Message = ex.ToString() };
             }
-        }      
+        }
 
         public ServiceResultEntity Search(DocumentDto request)
         {
