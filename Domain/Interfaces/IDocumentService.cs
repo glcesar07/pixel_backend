@@ -12,5 +12,6 @@ namespace Domain.Interfaces
         ServiceResultEntity All(DocumentDto request);
         ServiceResultEntity One(DocumentDto request);
         ServiceResultEntity Search(DocumentDto request);
+        ServiceResultEntity SearchParagrah(DocumentDto request);
     }
 }

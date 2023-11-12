@@ -114,5 +114,19 @@ namespace Presentation.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("search-by-paragraph")]
+        public IActionResult SearchByParagraph(DocumentDto request)
+        {
+            var result = _service.SearchParagrah(request);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

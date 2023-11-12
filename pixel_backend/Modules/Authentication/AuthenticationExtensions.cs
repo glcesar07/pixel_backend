@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Presentation.Helpers;
+using System.Security.Claims;
 using System.Text;
 
 namespace Presentation.Modules.Authentication
@@ -41,12 +42,23 @@ namespace Presentation.Modules.Authentication
                 {
                     OnTokenValidated = context =>
                     {
-                        if (context?.Principal?.Identity?.Name is null)
+                        if (context == null)
                         {
-                            throw new ArgumentNullException("El nombre de identidad no puede ser nulo.");
+                            throw new ArgumentNullException(nameof(context), "El contexto no puede ser nulo.");
                         }
 
-                        var userId = int.Parse(context.Principal.Identity.Name);
+                        if (context.Principal == null)
+                        {
+                            throw new ArgumentNullException(nameof(context.Principal), "Principal no puede ser nulo.");
+                        }
+
+                        var nameIdentifierClaim = context.Principal.FindFirst(ClaimTypes.NameIdentifier);
+                        if (nameIdentifierClaim == null)
+                        {
+                            throw new ArgumentNullException(nameof(nameIdentifierClaim), "El claim 'nameidentifier' no puede ser nulo.");
+                        }
+                        
+                        var email = nameIdentifierClaim.Value;
                         return Task.CompletedTask;
                     },
 

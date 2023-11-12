@@ -13,6 +13,7 @@
         public int? estado { get; set; }
         public int? pageSize { get; set; }
         public int? pageNumber { get; set; }
+        public string? contenido { get; set; }
         public DocumentDto()
         {
             nombre = string.Empty;

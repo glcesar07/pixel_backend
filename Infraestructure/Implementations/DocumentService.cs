@@ -327,7 +327,7 @@ namespace Infraestructure.Implementations
         {
             try
             {
-                if (request.id is null)
+                if (request.nombre is null)
                 {
                     return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "id no se esta enviando correctamente." };
                 }
@@ -338,6 +338,32 @@ namespace Infraestructure.Implementations
                     {
                         cmd.Parameters.AddWithValue("@opcion", 8);
                         cmd.Parameters.AddWithValue("@nombre", request.nombre);
+
+                        return DataValidator.ValidateDatabaseData(cmd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResultEntity { Success = false, Message = ex.ToString() };
+            }
+        }
+
+        public ServiceResultEntity SearchParagrah(DocumentDto request)
+        {
+            try
+            {
+                if (request.contenido is null)
+                {
+                    return new ServiceResultEntity { Success = false, Message = "Errores de validacion.", Data = "id no se esta enviando correctamente." };
+                }
+
+                using (SqlConnection conn = MainConnection.Connection(_configuration))
+                {
+                    using (SqlCommand cmd = new(_commandText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@opcion", 9);
+                        cmd.Parameters.AddWithValue("@contenido", request.contenido);
 
                         return DataValidator.ValidateDatabaseData(cmd);
                     }

@@ -28,7 +28,8 @@ namespace Infraestructure.Security
 
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, (string)userObject.username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())                
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, (string)userObject.username)
             };
 
             var token = new JwtSecurityToken(
